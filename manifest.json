@@ -1,7 +1,9 @@
 {
+  "id": "/cps/index.html",
   "name": "꿀템 모음집",
   "short_name": "꿀템모음",
-  "start_url": "/cps/",
+  "description": "추천 꿀템 모음집 앱입니다.",
+  "start_url": "/cps/index.html",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#e60012",
