@@ -1,7 +1,7 @@
 {
   "name": "꿀템 모음집",
   "short_name": "꿀템모음",
-  "start_url": "./index.html",
+  "start_url": "/cps/",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#e60012",
@@ -9,7 +9,8 @@
     {
       "src": "https://cdn-icons-png.flaticon.com/512/3081/3081559.png",
       "sizes": "512x512",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any maskable"
     }
   ]
 }
