@@ -39,6 +39,55 @@
   </div>
 
   <script>
+    // 쿠팡 파트너스 링크 클릭 시 쿠팡 앱으로 강제 이동시키는 함수
+  function openCoupangApp(url) {
+    const isAndroid = /Android/i.test(navigator.userAgent);
+    
+    if (isAndroid) {
+      // 안드로이드 패키지명(com.coupang.mobile)을 지정하여 쿠팡 앱 강제 호출
+      const cleanUrl = url.replace(/^https?:\/\//, '');
+      const intentUrl = `intent://${cleanUrl}#Intent;scheme=https;package=com.coupang.mobile;end;`;
+      window.location.href = intentUrl;
+    } else {
+      // 아이폰(iOS) 또는 PC 환경
+      window.location.href = url;
+    }
+  }
+
+  // DOM 로드 후 기존 PWA/설치 로직 실행
+  window.addEventListener('DOMContentLoaded', () => {
+    let deferredPrompt;
+    const installModal = document.getElementById('install-modal');
+    const installBtn = document.getElementById('btn-install');
+    const closeBtn = document.getElementById('btn-close');
+
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('./sw.js').catch(err => console.log(err));
+    }
+
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+      if (installModal) installModal.style.display = 'block';
+    });
+
+    if (installBtn) {
+      installBtn.addEventListener('click', async () => {
+        if (installModal) installModal.style.display = 'none';
+        if (deferredPrompt) {
+          deferredPrompt.prompt();
+          const { outcome } = await deferredPrompt.userChoice;
+          deferredPrompt = null;
+        }
+      });
+    }
+
+    if (closeBtn) {
+      closeBtn.addEventListener('click', () => {
+        if (installModal) installModal.style.display = 'none';
+      });
+    }
+  });
     let deferredPrompt;
 
     // 페이지 요소가 다 로드된 뒤 안전하게 실행
