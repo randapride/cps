@@ -30,7 +30,7 @@
     이 포스팅은 쿠팡 파트너스 활동의 일환으로,<br>이에 따른 일정액의 수수료를 제공받습니다.
   </div>
 
-  <!-- 설치 안내 팝업 모달 (HTML) -->
+  <!-- 팝업 모달 HTML (스크립트에서 이 ID들을 참조합니다) -->
   <div id="install-modal" style="display: none; position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: white; padding: 20px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.25); width: 85%; max-width: 360px; text-align: center; z-index: 9999;">
     <h3 style="margin-top:0; margin-bottom: 8px; font-size: 16px; color: #333;">앱으로 편리하게 이용하세요!</h3>
     <p style="font-size: 13px; color: #666; margin-bottom: 16px;">홈 화면에 추가하면 바로 접속할 수 있습니다.</p>
@@ -41,7 +41,7 @@
   <script>
     let deferredPrompt;
 
-    // DOM 요소가 모두 로드된 후 실행
+    // 페이지 요소가 다 로드된 뒤 안전하게 실행
     window.addEventListener('DOMContentLoaded', () => {
       const installModal = document.getElementById('install-modal');
       const installBtn = document.getElementById('btn-install');
@@ -52,16 +52,16 @@
         navigator.serviceWorker.register('./sw.js').catch(err => console.log(err));
       }
 
-      // 안드로이드 크롬 설치 이벤트 수신
+      // 안드로이드 설치 이벤트 수신
       window.addEventListener('beforeinstallprompt', (e) => {
         e.preventDefault();
         deferredPrompt = e;
         if (installModal) {
-          installModal.style.display = 'block'; // 팝업 띄우기
+          installModal.style.display = 'block'; // 팝업창 띄우기
         }
       });
 
-      // 설치 버튼 클릭 시
+      // 앱으로 설치하기 버튼 클릭 시
       if (installBtn) {
         installBtn.addEventListener('click', async () => {
           if (installModal) installModal.style.display = 'none';
@@ -74,7 +74,7 @@
         });
       }
 
-      // 닫기 버튼 클릭 시
+      // 나중에 하기 버튼 클릭 시
       if (closeBtn) {
         closeBtn.addEventListener('click', () => {
           if (installModal) installModal.style.display = 'none';
