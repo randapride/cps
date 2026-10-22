@@ -37,6 +37,40 @@
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.register('sw.js');
     }
+    let deferredPrompt;
+  const installModal = document.getElementById('install-modal');
+  const installBtn = document.getElementById('btn-install');
+  const closeBtn = document.getElementById('btn-close');
+
+  // 브라우저가 설치 준비가 완료되었을 때 실행
+  window.addEventListener('beforeinstallprompt', (e) => {
+    // 기본 브라우저 팝업 방지
+    e.preventDefault();
+    // 이벤트 객체 저장
+    deferredPrompt = e;
+    // 우리가 만든 Custom 팝업 모달 띄우기
+    installModal.style.display = 'block';
+  });
+
+  // '앱으로 설치하기' 버튼 클릭 시
+  installBtn.addEventListener('click', () => {
+    installModal.style.display = 'none';
+    if (deferredPrompt) {
+      // 실제 브라우저 설치 시스템 팝업 호출
+      deferredPrompt.prompt();
+      deferredPrompt.userChoice.then((choiceResult) => {
+        if (choiceResult.outcome === 'accepted') {
+          console.log('사용자가 설치를 승인함');
+        }
+        deferredPrompt = null;
+      });
+    }
+  });
+
+  // '나중에 하기' 버튼 클릭 시
+  closeBtn.addEventListener('click', () => {
+    installModal.style.display = 'none';
+  });
   </script>
 </body>
 </html>
